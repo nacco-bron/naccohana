@@ -5,6 +5,8 @@ services:
       context: ./docker/php
       args:
         - TZ=${TZ}
+    ports:
+      - 9000:9000
     volumes:
       - ./src:/work
       - ./logs:/var/log/php
@@ -17,30 +19,31 @@ services:
       - DB_USERNAME=${DB_USER}
       - DB_PASSWORD=${DB_PASS}
       - TZ=${TZ}
-  web:
-    image: nginx:1.17-alpine
-    depends_on:
-      - app
-    ports:
-      - 10080:80
-    volumes:
-      - ./src:/work
-      - ./logs:/var/log/nginx
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-    environment:
-      - TZ=${TZ}
+    command: ash -c "composer install --no-interaction && php artisan serve --host 0.0.0.0 --port=9000"
   db:
     image: mysql:8.0
-    volumes:
-      - db-store:/var/lib/mysql
-      - ./logs:/var/log/mysql
-      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    command: bash -c 'usermod -o -u 1000 mysql; groupmod -o -g 500 mysql; chown -R mysql:root /var/run/mysqld/; /entrypoint.sh mysqld --user=mysql --console'
+    volumes: 
+        - ./data:/var/lib/mysql
+        - ./logs:/var/log/mysql
+        - ./docker/mysql/sqls:/docker-entrypoint-initdb.d
+        - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
     environment:
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_PASSWORD=${DB_PASS}
-      - MYSQL_ROOT_PASSWORD=${DB_PASS}
-      - TZ=${TZ}
-
-volumes:
-  db-store:
+        - MYSQL_DATABASE=${DB_NAME}
+        - MYSQL_USER=${DB_USER}
+        - MYSQL_PASSWORD=${DB_PASS}
+        - MYSQL_ROOT_PASSWORD=${ROOT_PASS}
+        - TZ=${TZ}
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - db
+    environment: 
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+      - PMA_USER=${DB_USER}
+      - PMA_PASSWORD=${DB_PASS}
+    ports: 
+      - "4000:80"
+    volumes:
+      - ./docker/phpmyadmin/sessions:/sessions      

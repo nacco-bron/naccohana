@@ -12,5 +12,25 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/flowers');
 });
+
+// 花の一覧
+Route::get('/flowers', 'FlowerController@index');
+
+// 科を指定した花の一覧
+Route::get('/flowers/family/{family}', 'FlowerController@family');
+
+// 花の登録
+Route::post('/flower', 'FlowerController@regist');
+
+// 花の編集
+Route::post('/flower/edit/{flower}','FlowerController@edit');
+
+// 花の更新
+Route::post('/flower/update/{flower}','FlowerController@update');
+
+// 花の削除
+Route::delete('/flower/delete/{flower}', 'FlowerController@delete');
+
+
