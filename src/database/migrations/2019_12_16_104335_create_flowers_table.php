@@ -16,7 +16,6 @@ class CreateFlowersTable extends Migration
         Schema::create('flowers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->collation('utf8_unicode_ci');
-            $table->string('family_name')->collation('utf8_unicode_ci');
             $table->string('file_name')->collation('utf8_unicode_ci');
             $table->timestamps();
         });
