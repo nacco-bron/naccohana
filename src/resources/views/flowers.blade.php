@@ -4,7 +4,7 @@
         <div class="">
 
             <!-- regist flower -->
-            @if($flower)
+            @if(!is_null($flower))
             <div class="card border-info">
                 <div class="card-header">更新</div>
             @else
@@ -14,12 +14,12 @@
                 <div class="card-body">
                     @include('common.errors')
                     
-                    <form enctype="multipart/form-data" action="@if($flower){{ url('flower/update/'.$flower->id) }}@else{{ url('flower') }}@endif" method="POST" class="form-horizontal" >
+                    <form enctype="multipart/form-data" action="@if(!is_null($flower)){{ url('flower/update/'.$flower->id) }}@else{{ url('flower') }}@endif" method="POST" class="form-horizontal" >
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label for="name" class="col-sm-3 control-label">名前</label>
                             <div class="col-sm-6">
-                            <input type="text" name="name" id="name" class="form-control" value="@if($flower){{ $flower->name }}@endif">
+                            <input type="text" name="name" id="name" class="form-control" value="@if(!is_null($flower)){{ optional($flower)->name }}@endif">
                             </div>
                             <label for="family_id" class="col-sm-3 control-label">科名</label>
                             <div class="col-sm-6">
@@ -28,7 +28,7 @@
                                   <option value="{{ $family->id }}">{{ $family->name }}</option>
                                 @endforeach
                                 </select>
-                                <input type="hidden" name="tmp_family_id" id="tmp_family_id" value="@if($flower){{ $flower->family_id }}@endif">
+                                <input type="hidden" name="tmp_family_id" id="tmp_family_id" value="@if(!is_null($flower)){{ optional($flower)->family_id }}@endif">
                             </div>
                             <label for="flower-image" class="col-sm-3 control-label">画像</label>
                             <div class="col-sm-6">
@@ -38,13 +38,13 @@
                                             Choose File<input type="file" id="image" name="image" style="display:none">
                                         </span>
                                     </label>
-                                        <input type="text" name="file_name" class="form-control" readonly="" value="@if($flower){{ $flower->file_name }}@endif">
+                                        <input type="text" name="file_name" class="form-control" readonly="" value="@if(!is_null($flower)){{ optional($flower)->file_name }}@endif">
                                 </div>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            @if($flower)
+                            @if(!is_null($flower))
                             <div class="col-sm-offset-3 col-sm-6 d-inline">
                                 <button type="submit" class="btn btn-info">
                                     <i class="fa fa-arrow-down "></i> 変更
@@ -68,7 +68,7 @@
             <!-- search flowers -->
             <div class="card my-4">
                 <div class="card-body">
-                    <form enctype="multipart/form-data" action="@if($flower){{ url('flower/update/'.$flower->id) }}@else{{ url('flower') }}@endif" method="POST" class="form-horizontal" >
+                    <form enctype="multipart/form-data" action="@if(!is_null($flower)){{ url('flower/update/'.$flower->id) }}@else{{ url('flower') }}@endif" method="POST" class="form-horizontal" >
                         {{ csrf_field() }}
                         <div class="form-group row">
                             <label for="search_family_id" class="col-sm-2 control-label"><i class="fa fa-search "></i> 絞り込み</label>
@@ -85,7 +85,7 @@
             </div>
             
             <!-- current flowers -->
-            @if (count($flowers) > 0)
+            @if (!is_null($flowers))
             <div class="card my-4">
                 <div class="card-header">花 一覧</div>
                 <div class="card-body">
@@ -103,13 +103,13 @@
                         
                         @foreach ($flowers as $flower)
                             <tr>
-                                <td class="align-middle table-text word-break td_name"><div class="text-break">{{ $flower->name }}</div></td>
+                                <td class="align-middle table-text word-break td_name"><div class="text-break">{{ optional($flower)->name }}</div></td>
                                 <td class="align-middle table-text word-break td_family_name">
-                                    <div class="text-break"><a class="text-info" href="{{ url('/flowers/family/'. $flower->family_id) }}">{{ $flower->family->name }}</a></div>
+                                    <div class="text-break"><a class="text-info" href="{{ url('/flowers/family/'. $flower->family_id) }}">{{ optional($flower)->family->name }}</a></div>
                                 </td>
                                 <td class="align-middle">
-                                    @if($flower->file_name != null)
-                                    <img data-toggle="modal" data-target="#ModalCenter" data-image="/hana-app/public/storage/images/{{ $flower->id . '_' . $flower->file_name }}" src="/hana-app/public/storage/images/{{ $flower->id . '_' . $flower->file_name }}" width="150px" height="150px" alt="{{ $flower->name }}" class="img-thumbnail">
+                                    @if(optional($flower)->file_name != null)
+                                    <img data-toggle="modal" data-target="#ModalCenter" data-image="/hana-app/public/storage/images/{{ optional($flower)->id . '_' . optional($flower)->file_name }}" src="/hana-app/public/storage/images/{{ optional($flower)->id . '_' . optional($flower)->file_name }}" width="150px" height="150px" alt="{{ optional($flower)->name }}" class="img-thumbnail">
                                     @else
                                     <img src="/hana-app/public/storage/images/dummy.jpg" width="150px" height="150px" alt="dummy" class="img-thumbnail">
                                     @endif
@@ -154,7 +154,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
           <span aria-hidden="true">&times;</span>
         </button>
-        <img id="detail-image" src="/storage/images/{{ $flower->id . '_' . $flower->file_name }}" width="600px" alt="{{ $flower->name }}" class="mt-2 img-thumbnail">
+        <img id="detail-image" src="/storage/images/{{ optional($flower)->id . '_' . optional($flower)->file_name }}" width="600px" alt="{{ optional($flower)->name }}" class="mt-2 img-thumbnail">
         <div class="m-3">
             <p id="fname"></p>
             <p id="ffamily"></p>
