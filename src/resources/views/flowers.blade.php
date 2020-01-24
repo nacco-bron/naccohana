@@ -109,9 +109,9 @@
                                 </td>
                                 <td class="align-middle">
                                     @if(optional($flower)->file_name != null)
-                                    <img data-toggle="modal" data-target="#ModalCenter" data-image="/hana-app/public/storage/images/{{ optional($flower)->id . '_' . optional($flower)->file_name }}" src="/hana-app/public/storage/images/{{ optional($flower)->id . '_' . optional($flower)->file_name }}" width="150px" height="150px" alt="{{ optional($flower)->name }}" class="img-thumbnail">
+                                    <img data-toggle="modal" data-target="#ModalCenter" data-image="/storage/images/{{ optional($flower)->id . '_' . optional($flower)->file_name }}" src="/storage/images/{{ optional($flower)->id . '_' . optional($flower)->file_name }}" width="150px" height="150px" alt="{{ optional($flower)->name }}" class="img-thumbnail">
                                     @else
-                                    <img src="/hana-app/public/storage/images/dummy.jpg" width="150px" height="150px" alt="dummy" class="img-thumbnail">
+                                    <img src="/storage/images/dummy.jpg" width="150px" height="150px" alt="dummy" class="img-thumbnail">
                                     @endif
                                 </td>
                                 <td class="align-middle">
