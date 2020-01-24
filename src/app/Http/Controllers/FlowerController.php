@@ -15,12 +15,19 @@ class FlowerController extends Controller
     
     public function index(Request $request) {
  
-        $flowers = Flower::orderBy('created_at', 'desc')->get();
-        $families = Family::orderBy('name', 'asc')->get();
-        $search_families = Family::select('id','name')
+        $flowers = Flower::orderBy('name', 'asc')->take(100)->get();
+        $families = $this->getFamilyList(
+                                Family::orderBy('name', 'asc')
+                                ->where('name', 'not like', '－')
+                                ->get()
+                            );
+        $search_families = $this->getFamilyList(
+                                Family::select('id','name')
+                                ->where('name', 'not like', '－')
                                 ->whereIn('id', Flower::select('family_id'))
                                 ->orderBy('name', 'asc')
-                                ->get();
+                                ->get()
+                            );
                 
         return view('flowers', [
             'flowers' => $flowers,
@@ -38,12 +45,19 @@ class FlowerController extends Controller
     
     public function family(Request $request, $family_id) {
         
-        $flowers = Family::find($family_id)->flowers()->orderBy('created_at', 'desc')->get();
-        $families = Family::orderBy('name', 'asc')->get();
-        $search_families = Family::select('id','name')
+        $flowers = Family::find($family_id)->flowers()->orderBy('name', 'asc')->get();
+        $families = $this->getFamilyList(
+                                Family::orderBy('name', 'asc')
+                                ->where('name', 'not like', '－')
+                                ->get()
+                            );
+        $search_families = $this->getFamilyList(
+                                Family::select('id','name')
+                                ->where('name', 'not like', '－')
                                 ->whereIn('id', Flower::select('family_id'))
                                 ->orderBy('name', 'asc')
-                                ->get();
+                                ->get()
+                            );
                 
         return view('flowers', [
             'flowers' => $flowers,
@@ -87,12 +101,19 @@ class FlowerController extends Controller
         //レコードを検索
         $flower = Flower::find($flower->id);
         
-        $flowers = Flower::orderBy('created_at', 'desc')->get();
-        $families = Family::orderBy('name', 'asc')->get();
-        $search_families = Family::select('id','name')
+        $flowers = Flower::orderBy('name', 'asc')->get();
+        $families = $this->getFamilyList(
+                                Family::orderBy('name', 'asc')
+                                ->where('name', 'not like', '－')
+                                ->get()
+                            );
+        $search_families = $this->getFamilyList(
+                                Family::select('id','name')
+                                ->where('name', 'not like', '－')
                                 ->whereIn('id', Flower::select('family_id'))
                                 ->orderBy('name', 'asc')
-                                ->get();
+                                ->get()
+                            );
 
         //検索結果をビューに渡す
         return view('flowers', [
@@ -147,5 +168,10 @@ class FlowerController extends Controller
         return redirect('/flowers');
     }    
     
-    
+    private function getFamilyList($families) {
+        foreach ($families as $family) {
+            $family->name = $family->name . '科';
+        }
+        return $families;
+    }
 }

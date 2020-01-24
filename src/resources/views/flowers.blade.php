@@ -105,7 +105,7 @@
                             <tr>
                                 <td class="align-middle table-text word-break td_name"><div class="text-break">{{ optional($flower)->name }}</div></td>
                                 <td class="align-middle table-text word-break td_family_name">
-                                    <div class="text-break"><a class="text-info" href="{{ url('/flowers/family/'. $flower->family_id) }}">{{ optional($flower)->family->name }}</a></div>
+                                    <div class="text-break"><a class="text-info" href="{{ url('/flowers/family/'. $flower->family_id) }}">{{ optional($flower)->family->name }}科</a></div>
                                 </td>
                                 <td class="align-middle">
                                     @if(optional($flower)->file_name != null)
@@ -179,7 +179,7 @@ $(function(){
     // 科名絞り込みセレクトボックス
     $("#search_family_id").change(function() {
        const family_id = $(this).val();
-       window.location.href = '/hana-app/public/flowers/family/' + family_id;
+       window.location.href = '/flowers/family/' + family_id;
     });
        
     // 科名選択
