@@ -12,8 +12,11 @@
 */
 
 Route::get('/', function () {
-    return redirect('/flowers');
+    return redirect('/discoveries');
 });
+
+// 発見情報の一覧
+Route::get('/discoveries', 'DiscoveryController@index');
 
 // 花の一覧
 Route::get('/flowers', 'FlowerController@index');
