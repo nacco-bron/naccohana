@@ -32,16 +32,5 @@ services:
         - MYSQL_PASSWORD=${DB_PASS}
         - MYSQL_ROOT_PASSWORD=${ROOT_PASS}
         - TZ=${TZ}
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    depends_on:
-      - db
-    environment: 
-      - PMA_ARBITRARY=1
-      - PMA_HOST=db
-      - PMA_USER=${ROOT_USER}
-      - PMA_PASSWORD=${ROOT_PASS}
     ports: 
-      - "4000:80"
-    volumes:
-      - ./docker/phpmyadmin/sessions:/sessions      
+      - "3306:3306"
