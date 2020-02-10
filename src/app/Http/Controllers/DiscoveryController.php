@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Discovery;
 use App\Flower;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DiscoveryController extends Controller
 {
