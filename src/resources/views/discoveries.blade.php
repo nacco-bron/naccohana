@@ -17,8 +17,11 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>発見日時</th>
                             <th>名前</th>
                             <th>科名</th>
+                            <th>都道府県</th>
+                            <th>市区町村</th>
                             <th>緯度</th>
                             <th>経度</th>
                         </tr>
@@ -29,10 +32,19 @@
                         @foreach ($discoveries as $discovery)
                         <tr>
                             <td class="align-middle table-text word-break">
+                                <div class="text-break">{{ optional($discovery)->discovered_at }}</div>
+                            </td>
+                            <td class="align-middle table-text word-break">
                                 <div class="text-break">{{ optional($discovery)->flower->name }}</div>
                             </td>
                             <td class="align-middle table-text word-break">
                                 <div class="text-break"><a class="text-info" href="">{{ optional($discovery)->flower->family->name }}科</a></div>
+                            </td>
+                            <td class="align-middle table-text word-break">
+                                <div class="text-break">{{ optional($discovery)->prefecture->name }}</div>
+                            </td>
+                            <td class="align-middle table-text word-break">
+                                <div class="text-break">{{ optional($discovery)->city->name }}</div>
                             </td>
                             <td class="align-middle table-text word-break">
                                 <div class="text-break">{{ optional($discovery)->latlng['lat'] }}</div>
