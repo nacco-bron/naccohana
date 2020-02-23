@@ -4,7 +4,9 @@
     <div class="">
 
         <!-- regist discovery -->
-
+        <div class="text-right">
+            <button class="btn btn-info btn-lg right"><i class="fa fa-plus" aria-hidden="true"></i></button>
+        </div>
 
         <!-- search discoveries -->
 
@@ -21,9 +23,7 @@
                             <th>名前</th>
                             <th>科名</th>
                             <th>都道府県</th>
-                            <th>市区町村</th>
-                            <th>緯度</th>
-                            <th>経度</th>
+                            <th>画像</th>
                         </tr>
                     </thead>
 
@@ -38,19 +38,18 @@
                                 <div class="text-break">{{ optional($discovery)->flower->name }}</div>
                             </td>
                             <td class="align-middle table-text word-break">
-                                <div class="text-break"><a class="text-info" href="">{{ optional($discovery)->flower->family->name }}科</a></div>
+                                <div class="text-break"><a class="text-info" href="">{{
+                                        optional($discovery)->flower->family->name }}科</a></div>
                             </td>
                             <td class="align-middle table-text word-break">
                                 <div class="text-break">{{ optional($discovery)->prefecture->name }}</div>
                             </td>
-                            <td class="align-middle table-text word-break">
-                                <div class="text-break">{{ optional($discovery)->city->name }}</div>
-                            </td>
-                            <td class="align-middle table-text word-break">
-                                <div class="text-break">{{ optional($discovery)->latlng['lat'] }}</div>
-                            </td>
-                            <td class="align-middle table-text word-break">
-                                <div class="text-break">{{ optional($discovery)->latlng['lng'] }}</div>
+                            <td class="align-middle">
+                                @if(optional($discovery)->file_name1 != null)
+                                <img src="/storage/images/{{ optional($discovery)->id . '_' . optional($discovery)->file_name1 }}" width="120px" height="120px" alt="{{ optional($discovery)->flower->name }}" class="img-thumbnail">
+                                @else
+                                <img src="/storage/images/dummy.jpg" width="120px" height="120px" alt="dummy" class="img-thumbnail">
+                                @endif
                             </td>
                         </tr>
                         @endforeach
