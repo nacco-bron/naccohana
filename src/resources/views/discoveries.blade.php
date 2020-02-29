@@ -7,11 +7,17 @@
 
         <!-- regist discovery -->
         <div class="text-right">
-            <button class="btn btn-info btn-lg right"><i class="fa fa-plus" aria-hidden="true"></i></button>
+            <button class="btn btn-info btn-lg right" onclick="location.href='{{ url('/discovery') }}'"><i class="fa fa-plus" aria-hidden="true"></i></button>
         </div>
 
-        <!-- search discoveries -->
+@if ($message = Session::get('success'))
+<div class="alert alert-success alert-block">
+        <button type="button" class="close" data-dismiss="alert">×</button>	
+        <strong>{{ $message }}</strong>
+</div>
+@endif
 
+        <!-- search discoveries -->
 
         <!-- current discoveries -->
         @if (!is_null($discoveries))
@@ -34,21 +40,20 @@
                         @foreach ($discoveries as $discovery)
                         <tr>
                             <td class="align-middle table-text word-break">
-                                <div class="text-break">{{ optional($discovery)->discovered_at }}</div>
+                                <div class="text-break">{{ $discovery->discovered_at }}</div>
                             </td>
                             <td class="align-middle table-text word-break">
-                                <div class="text-break">{{ optional($discovery)->flower->name }}</div>
+                                <div class="text-break">{{ $discovery->flower->name }}</div>
                             </td>
                             <td class="align-middle table-text word-break">
-                                <div class="text-break"><a class="text-info" href="">{{
-                                        optional($discovery)->flower->family->name }}科</a></div>
+                                <div class="text-break"><a class="text-info" href="">{{ $discovery->flower->family->name }}科</a></div>
                             </td>
                             <td class="align-middle table-text word-break">
-                                <div class="text-break">{{ optional($discovery)->prefecture->name }}</div>
+                                <div class="text-break">{{ optional($discovery->prefecture)->name }}</div>
                             </td>
                             <td class="align-middle">
-                                @if(optional($discovery)->file_name1 != null)
-                                <img src="/storage/images/{{ optional($discovery)->id . '_' . optional($discovery)->file_name1 }}" width="120px" height="120px" alt="{{ optional($discovery)->flower->name }}" class="img-thumbnail">
+                                @if($discovery->file_name1 != null)
+                                <img src="/storage/images/{{ $discovery->id . '_' . $discovery->file_name1 }}" width="120px" height="120px" alt="{{ $discovery->flower->name }}" class="img-thumbnail">
                                 @else
                                 <img src="/storage/images/dummy.jpg" width="120px" height="120px" alt="dummy" class="img-thumbnail">
                                 @endif

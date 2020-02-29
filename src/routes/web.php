@@ -18,6 +18,12 @@ Route::get('/', function () {
 // 発見情報の一覧
 Route::get('/discoveries', 'DiscoveryController@index');
 
+// 発見情報の登録画面
+Route::get('/discovery', 'DiscoveryController@create');
+
+// 発見情報の登録
+Route::post('/discovery', 'DiscoveryController@store');
+
 // 花の一覧
 Route::get('/flowers', 'FlowerController@index');
 
