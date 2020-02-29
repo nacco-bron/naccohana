@@ -1,5 +1,7 @@
 @extends('layouts.app')
-@section('discoveries_index')
+@section('title', 'Hana App | 発見一覧')
+
+@section('content')
 <div class="container">
     <div class="">
 
@@ -62,5 +64,4 @@
 
     </div>
 </div>
-
 @endsection

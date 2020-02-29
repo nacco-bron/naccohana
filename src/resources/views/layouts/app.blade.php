@@ -3,14 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Hana App</title>
+    <title>@yield('title', 'Hana App')</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="{{ asset('js/app.js') }}"></script>
 </head>
+
 <body>
-    <div class="container my-4">
+    <div class="container">
         @include('layouts.header')
-        @yield('discoveries_index')
+        @yield('content')
+        @include('layouts.footer')
     </div>
 </body>
 
