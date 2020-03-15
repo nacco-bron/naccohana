@@ -5,6 +5,7 @@ RUN apk update && apk upgrade
 RUN apk add php-bcmath php-ctype php-json php-mbstring php-openssl php-pdo php-tokenizer php-xml php-zip
 RUN apk add libzip-dev
 RUN docker-php-ext-install zip
+RUN docker-php-ext-install pdo_mysql
 
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
