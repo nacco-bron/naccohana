@@ -1,36 +1,48 @@
-version: "3"
-services:
-  app:
-    build:
-      context: ./docker/php
-      args:
-        - TZ=${TZ}
-    ports:
-      - 9000:9000
-    volumes:
-      - ./src:/work
-      - ./logs:/var/log/php
-      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
-    working_dir: /work
-    environment:
-      - DB_CONNECTION=mysql
-      - DB_HOST=db
-      - DB_DATABASE=${DB_NAME}
-      - DB_USERNAME=${DB_USER}
-      - DB_PASSWORD=${DB_PASS}
-      - TZ=${TZ}
-    command: ash -c "composer install --no-interaction && php artisan serve --host 0.0.0.0 --port=9000"
-  db:
-    build: ./docker/mysql/
-    command: bash -c 'usermod -o -u 1000 mysql; groupmod -o -g 500 mysql; chown -R mysql:root /var/run/mysqld/; /entrypoint.sh mysqld --user=mysql --console'
-    volumes: 
-        - ./data:/var/lib/mysql
-        - ./logs:/var/log/mysql
-    environment:
-        - MYSQL_DATABASE=${DB_NAME}
-        - MYSQL_USER=${DB_USER}
-        - MYSQL_PASSWORD=${DB_PASS}
-        - MYSQL_ROOT_PASSWORD=${ROOT_PASS}
-        - TZ=${TZ}
-    ports: 
-      - "3306:3306"
+version: '3.5'
+
+services: 
+    nginx:
+        build: 
+            context: ./docker/nginx
+            dockerfile: nginx.Dockerfile
+        networks: 
+            - frontend
+        ports: 
+            - 8080:80
+        links:
+            - php-fpm
+        volumes: 
+            - ./src:/var/www/app
+        container_name: nginx
+
+    php-fpm:
+        build: 
+            context: ./docker/php-fpm
+            dockerfile: php-fpm.Dockerfile
+        networks: 
+            - frontend
+            - backend
+        links:
+            - mariadb
+        volumes: 
+            - ./src:/var/www/app
+        container_name: php-fpm
+
+    mariadb:
+        build: 
+            context: ./docker/mariadb
+            dockerfile: mariadb.Dockerfile
+        networks: 
+            - backend
+        ports: 
+            - 13306:3306
+        volumes: 
+            - ./data:/var/lib/mysql
+        container_name: mariadb
+
+networks: 
+    frontend:
+        driver: bridge
+
+    backend:
+        driver: bridge
