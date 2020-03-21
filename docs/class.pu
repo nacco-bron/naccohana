@@ -1,0 +1,49 @@
+@startuml クラス図
+
+package flower {
+class Flower
+class Family
+}
+
+package discovery{
+class Discovery
+class Image
+}
+
+class User
+
+class Tweet
+
+package 場所 {
+class City
+class Prefecture
+class Geometry <<地理座標>>
+class 場所
+}
+
+Flower "1..*" ---o "1" Family
+
+Discovery "0..*" o--- "1" Flower
+
+Discovery "1" o--- "0..*" Image
+
+場所 "1" o--- "0..1" City
+
+City "1..*" ---o "1" Prefecture
+
+Tweet "0..*" ---> "1" Discovery : use
+
+場所 "1" o--- "0..*" Geometry
+
+User "1" <--- "0..1" Discovery : use
+
+Discovery "1" o--- "0..1" 場所
+
+
+
+
+
+
+
+
+@enduml
