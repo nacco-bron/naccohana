@@ -52,7 +52,6 @@ package "naccohana_system" <<Database>> {
     entity addresses as "所在地" <<T>>  {
         + id : int(10) [PK]
         --
-        # discovery_id : int(10) [FK]
         # prefecture_id : int(10) [FK]
         # city_id : int(10) [FK]
     }
@@ -60,21 +59,27 @@ package "naccohana_system" <<Database>> {
     entity images as "画像" <<T>>  {
         + id : int(10) [PK]
         --
-        # discovery_id : int(10) [FK]
         file : MEDIUMBLOB
     }
 
-    entity latlng as "地理座標" <<T>>  {
+    entity latlngs as "地理座標" <<T>>  {
         + id : int(10) [PK]
         --
-        # discovery_id : int(10) [FK]
         latlng : geometry
     }
 
     entity users as "ユーザ" <<T>>  {
-        + id : int(10) [PK]
+        + id : bigint(20) [PK]
         --
-        twitter_id
+        email : varchar(100)
+        name : varchar(100)
+        image : varchar(100)
+        provider : varchar(100)
+        provider_id : varchar(100)
+        password : varchar(100)
+        remember_token : varchar(100)
+        created_at : timestamp
+        updated_at : timestamp
     }
 
 flowers "family_id" }|--|| "id" families
@@ -84,7 +89,7 @@ addresses "prefecture_id" }|..|| "id" prefectures
 
 discoveries "images_id" ||--o{ "id" images
 discoveries "addresses_id" ||--o{ "id" addresses
-discoveries "latlng_id" ||--o{ "id" latlng
+discoveries "latlng_id" ||--o{ "id" latlngs
 discoveries "flower_id" ||..|| "id" flowers
 
 users "id"  ||..o{ "user_id" discoveries
