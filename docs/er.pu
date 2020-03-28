@@ -1,0 +1,102 @@
+@startuml
+
+package "naccohana_system" <<Database>> {
+
+    entity flowers as "花" <<M>>  {
+        + id : int(10) [PK]
+        --
+        # family_id : int(10) [FK]
+        name : varchar(255)
+        created_at : timestamp
+        updated_at : timestamp
+    }
+
+    entity families as "科" <<M>>  {
+        + id : int(10) [PK]
+        --
+        name : varchar(255)
+        created_at : timestamp
+        updated_at : timestamp
+    }
+
+    entity prefectures as "都道府県" <<M>>  {
+        + id : int(10) [PK]
+        --
+        name : varchar(255)
+        created_at : timestamp
+        updated_at : timestamp
+    }
+
+    entity cities as "市区町村" <<M>>  {
+        + id : int(10) [PK]
+        --
+        # prefecture_id : int(10) [FK]
+        name : varchar(255)
+        created_at : timestamp
+        updated_at : timestamp
+    }
+
+    entity discoveries as "発見" <<T>>  {
+        + id : int(10) [PK]
+        --
+        # user_id : int(10) [FK]
+        # flower_id : int(10) [FK]
+        # addresses_id : int(10) [FK]
+        # image_id : int(10) [FK]
+        # latlng_id : int(10) [FK]
+        discovered_at : datetime
+        created_at : timestamp
+        updated_at : timestamp
+    }
+
+    entity addresses as "所在地" <<T>>  {
+        + id : int(10) [PK]
+        --
+        # discovery_id : int(10) [FK]
+        # prefecture_id : int(10) [FK]
+        # city_id : int(10) [FK]
+    }
+
+    entity images as "画像" <<T>>  {
+        + id : int(10) [PK]
+        --
+        # discovery_id : int(10) [FK]
+        file : MEDIUMBLOB
+    }
+
+    entity latlng as "地理座標" <<T>>  {
+        + id : int(10) [PK]
+        --
+        # discovery_id : int(10) [FK]
+        latlng : geometry
+    }
+
+    entity users as "ユーザ" <<T>>  {
+        + id : int(10) [PK]
+        --
+        twitter_id
+    }
+
+flowers "family_id" }|--|| "id" families
+addresses "city_id" }|..|| "id" cities
+cities "prefecture_id" }|--|| "id" prefectures
+addresses "prefecture_id" }|..|| "id" prefectures
+
+discoveries "images_id" ||--o{ "id" images
+discoveries "addresses_id" ||--o{ "id" addresses
+discoveries "latlng_id" ||--o{ "id" latlng
+discoveries "flower_id" ||..|| "id" flowers
+
+users "id"  ||..o{ "user_id" discoveries
+
+
+
+}
+
+
+
+
+
+
+
+@enduml
