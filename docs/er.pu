@@ -1,4 +1,4 @@
-@startuml
+@startuml ER図
 
 package "naccohana_system" <<Database>> {
 
